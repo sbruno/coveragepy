@@ -126,15 +126,12 @@ class Coverage(object):
 
         `config_file` determines what configuration file to read:
 
-            * If it is ".coveragerc", it is interpreted as if it were True,
-              for backward compatibility.
-
             * If it is a string, it is the name of the file to read.  If the
               file can't be read, it is an error.
 
             * If it is True, then a few standard files names are tried
-              (".coveragerc", "setup.cfg", "tox.ini").  It is not an error for
-              these files to not be found.
+              (".coveragerc", "setup.cfg", "tox.ini", "pyproject.toml").
+              It is not an error for these files to not be found.
 
             * If it is False, then no configuration file is read.
 

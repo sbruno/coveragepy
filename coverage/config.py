@@ -467,10 +467,6 @@ def config_files_to_try(config_file):
         (filename, is_our_file, was_file_specified)
     """
 
-    # Some API users were specifying ".coveragerc" to mean the same as
-    # True, so make it so.
-    if config_file == ".coveragerc":
-        config_file = True
     specified_file = (config_file is not True)
     if not specified_file:
         # No file was specified. Check COVERAGE_RCFILE.

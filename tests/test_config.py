@@ -575,19 +575,6 @@ class ConfigFileTest(UsingModulesMixin, CoverageTest):
     def test_config_file_settings_in_toxini(self):
         self.check_config_file_settings_in_other_file("tox.ini", self.TOX_INI)
 
-    def check_other_config_if_coveragerc_specified(self, fname, contents):
-        """Check that config `fname` is read if .coveragerc is missing, but specified."""
-        nested = self.LOTSA_SETTINGS.format(section="coverage:")
-        self.make_file(fname, nested + "\n" + contents)
-        cov = coverage.Coverage(config_file=".coveragerc")
-        self.assert_config_settings_are_correct(cov)
-
-    def test_config_file_settings_in_setupcfg_if_coveragerc_specified(self):
-        self.check_other_config_if_coveragerc_specified("setup.cfg", self.SETUP_CFG)
-
-    def test_config_file_settings_in_tox_if_coveragerc_specified(self):
-        self.check_other_config_if_coveragerc_specified("tox.ini", self.TOX_INI)
-
     def check_other_not_read_if_coveragerc(self, fname):
         """Check config `fname` is not read if .coveragerc exists."""
         self.make_file(".coveragerc", """\
@@ -670,12 +657,6 @@ class ConfigFileTest(UsingModulesMixin, CoverageTest):
             msg = "Couldn't read %r as a config file" % bad_file
             with self.assertRaisesRegex(CoverageException, msg):
                 coverage.Coverage(config_file=bad_file)
-
-    def test_nocoveragerc_file_when_specified(self):
-        cov = coverage.Coverage(config_file=".coveragerc")
-        self.assertFalse(cov.config.timid)
-        self.assertFalse(cov.config.branch)
-        self.assertEqual(cov.config.data_file, ".coverage")
 
     def test_no_toml_installed_no_toml(self):
         # Can't read a toml file that doesn't exist.

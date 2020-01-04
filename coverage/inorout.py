@@ -359,6 +359,10 @@ class InOrOut(object):
                 if filename in warned:
                     continue
 
+                if len(getattr(mod, "__path__", ())) > 1:
+                    # A namespace package, which confuses this code, so ignore it.
+                    continue
+
                 disp = self.should_trace(filename)
                 if disp.trace:
                     msg = "Already imported a file that will be measured: {}".format(filename)

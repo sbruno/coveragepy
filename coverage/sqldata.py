@@ -1049,6 +1049,8 @@ class SqliteDb(SimpleReprMixin):
                         )
             except Exception:
                 pass
+            if self.debug:
+                self.debug.write("EXCEPTION! {}".format(msg))
             raise CoverageException("Couldn't use data file {!r}: {}".format(self.filename, msg))
 
     def executemany(self, sql, data):

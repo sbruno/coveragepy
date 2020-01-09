@@ -13,7 +13,7 @@ import types
 from coverage import env
 from coverage.backward import BUILTINS
 from coverage.backward import PYC_MAGIC_NUMBER, imp, importlib_util_find_spec
-from coverage.files import python_reported_file
+from coverage.files import canonical_filename, python_reported_file
 from coverage.misc import CoverageException, ExceptionDuringRun, NoCode, NoSource, isolate_module
 from coverage.phystokens import compile_unicode
 from coverage.python import get_python_source
@@ -135,7 +135,6 @@ class PyRunner(object):
         else:
             path0 = os.path.abspath(os.path.dirname(self.arg0))
 
-
         if should_update_sys_path:
             # sys.path fakery.  If we are being run as a command, then sys.path[0]
             # is the directory of the "coverage" script.  If this is so, replace
@@ -143,7 +142,11 @@ class PyRunner(object):
             # current directory when running modules.  If it isn't so, then we
             # don't know what's going on, and just leave it alone.
             top_file = inspect.stack()[-1][0].f_code.co_filename
-            if os.path.abspath(sys.path[0]) == os.path.abspath(os.path.dirname(top_file)):
+            sys_path_0_abs = os.path.abspath(sys.path[0])
+            top_file_dir_abs = os.path.abspath(os.path.dirname(top_file))
+            sys_path_0_abs = canonical_filename(sys_path_0_abs)
+            top_file_dir_abs = canonical_filename(top_file_dir_abs)
+            if (not os.path.isdir(sys.path[0])) or sys_path_0_abs == top_file_dir_abs:
                 # Set sys.path correctly.
                 sys.path[0] = python_reported_file(path0)
 

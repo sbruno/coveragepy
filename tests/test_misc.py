@@ -13,7 +13,7 @@ from tests.coveragetest import CoverageTest
 
 
 class HasherTest(CoverageTest):
-    """Test our wrapper of md5 hashing."""
+    """Test our wrapper of sha1 hashing."""
 
     run_in_temp_dir = False
 
